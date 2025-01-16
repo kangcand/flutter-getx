@@ -54,7 +54,10 @@ class IndexView extends GetView {
                 return ZoomTapAnimation(
                   onTap: () {
                     // Navigasi ke EventDetailView saat item ditekan
-                    Get.to(() => EventDetailView(), id: 1);
+                    Get.to(
+                      () => EventDetailView(
+                          eventId: snapshot.data!.events![index].id!),
+                    );
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment

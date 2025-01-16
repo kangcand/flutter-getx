@@ -169,6 +169,48 @@ class DashboardController extends GetxController {
     }
   }
 
+  // delete events
+  // Fungsi buat hapus event, tinggal kasih ID-nya
+  void deleteEvent({required int id}) async {
+    // Kirim request POST ke server, tapi sebenarnya buat DELETE
+    final response = await _getConnect.post(
+      '${BaseUrl.deleteEvents}/$id', // URL endpoint ditambah ID event
+      {
+        '_method': 'delete', // Hack biar request diubah jadi DELETE
+      },
+      headers: {
+        'Authorization': "Bearer $token"
+      }, // Header autentikasi (token user)
+      contentType: "application/json", // Data dikirim dalam format JSON
+    );
+
+    // Cek respons server, kalau sukses ya good vibes
+    if (response.statusCode == 200) {
+      // Notifikasi sukses hapus event
+      Get.snackbar(
+        'Success', // Judul snack bar
+        'Event Deleted', // Pesan sukses
+        snackPosition: SnackPosition.BOTTOM, // Posisi snack bar di bawah
+        backgroundColor: Colors.green, // Latar hijau biar lega
+        colorText: Colors.white, // Teks putih biar baca enak
+      );
+
+      // Update UI dan reload data event biar up-to-date
+      update(); // Kasih tahu UI kalau ada yang berubah
+      getEvent(); // Refresh semua event
+      getYourEvent(); // Refresh event user
+    } else {
+      // Kalau gagal, ya udah kasih tau user aja
+      Get.snackbar(
+        'Failed', // Judul snack bar
+        'Event Failed to Delete', // Pesan error
+        snackPosition: SnackPosition.BOTTOM, // Posisi snack bar di bawah
+        backgroundColor: Colors.red, // Latar merah biar tegas
+        colorText: Colors.white, // Teks putih biar tetap baca jelas
+      );
+    }
+  }
+
   @override
   void onInit() {
     getEvent();
