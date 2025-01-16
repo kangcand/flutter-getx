@@ -34,7 +34,7 @@ class RegisterController extends GetxController {
         print('Registration successful: ${response.body}');
         authToken.write('token', response.body['token']);
         Get.snackbar('Success', 'Registration successful');
-        Get.offAllNamed('/login');
+        Get.offAllNamed('/dashboard');
       } else {
         print('Registration error: ${response.statusCode}');
         print('Response body: ${response.body}');
